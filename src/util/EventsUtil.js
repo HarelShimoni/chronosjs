@@ -26,6 +26,7 @@
     "use strict";
 
     function getListeners(lstnrs, eventName, appName) {
+        console.log(eventName);
         var callBacks = [];
         if (lstnrs[eventName] && lstnrs[eventName].length) {
             for (var i = 0; i < lstnrs[eventName].length; i++) {
