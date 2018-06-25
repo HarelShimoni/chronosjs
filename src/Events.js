@@ -38,11 +38,13 @@
             indexer = 0,
             cloneData,
             eventBufferLimit,
+            hierarchy,
             defaultAppName;
 
         defaultAppName = defaults && defaults.appName || "*";
         cloneData = (defaults && typeof defaults.cloneEventData === "boolean" ? defaults.cloneEventData : false);
         eventBufferLimit = (defaults && !isNaN(defaults.eventBufferLimit) ? defaults.eventBufferLimit : -1);
+        hierarchy = defaults && defaults.hierarchy || false;
 
         /**
          * This registers to an event only once, if it has fired the bind will be removed
@@ -194,7 +196,7 @@
             triggerData.passDataByRef = triggerData.passDataByRef || !cloneData;
             _storeEventData(triggerData);
 
-            var callBacks = evUtil.getListeners(lstnrs, triggerData.eventName, triggerData.appName);
+            var callBacks = evUtil.getListeners(lstnrs, triggerData.eventName, triggerData.appName, hierarchy);
 
             if (callBacks.length > 0) {
                 for (var j = 0; j < callBacks.length; j++) {

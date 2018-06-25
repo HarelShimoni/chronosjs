@@ -25,8 +25,7 @@
 }(typeof ChronosRoot === "undefined" ? this : ChronosRoot, function (root, exports, hide) {
     "use strict";
 
-    function getListeners(lstnrs, eventName, appName) {
-        console.log(eventName);
+    function getListeners(lstnrs, eventName, appName, hierarchy) {
         var callBacks = [];
         if (lstnrs[eventName] && lstnrs[eventName].length) {
             for (var i = 0; i < lstnrs[eventName].length; i++) {
@@ -42,6 +41,21 @@
                     lstnrs["*"][k].appName === appName) {//Specific events for a named instance
                     callBacks.push(lstnrs["*"][k]);
                 }
+            }
+        }
+        if(hierarchy) {
+            let delimiter = hierarchy.delimiter || '/';
+            let clonedEventName = eventName;
+            let segments = clonedEventName.split(delimiter);
+            let prev;
+            let match;
+            for(let lstKey = 0; lstKey < segments.length -1;lstKey++){
+                match = prev ? prev + segments[lstKey] + delimiter : segments[lstKey] + delimiter;
+                let matchWithSuffix = match + '*';
+                if(lstnrs[matchWithSuffix]){
+                    callBacks.push(lstnrs[matchWithSuffix][0]);
+                }
+                prev = match
             }
         }
         return callBacks;
