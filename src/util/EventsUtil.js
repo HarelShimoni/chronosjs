@@ -45,13 +45,18 @@
         }
         if(hierarchy) {
             let delimiter = hierarchy.delimiter || '/';
-            let clonedEventName = eventName;
-            let segments = clonedEventName.split(delimiter);
+            let segments = eventName.split(delimiter);
             let prev;
             let match;
+            let matchWithSuffix;
             for(let lstKey = 0; lstKey < segments.length -1;lstKey++){
-                match = prev ? prev + segments[lstKey] + delimiter : segments[lstKey] + delimiter;
-                let matchWithSuffix = match + '*';
+                if(prev){
+                    match = prev + segments[lstKey] + delimiter;
+                }
+                else {
+                    match = segments[lstKey] + delimiter;
+                }
+                matchWithSuffix = match + '*';
                 if(lstnrs[matchWithSuffix]){
                     callBacks.push(lstnrs[matchWithSuffix][0]);
                 }
